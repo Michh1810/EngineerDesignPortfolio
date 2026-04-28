@@ -1,22 +1,18 @@
 import { test, expect } from '@playwright/test'
 
 test.describe('Homepage', () => {
-  test('renders nav with name and social links', async ({ page }) => {
+  test('renders nav links', async ({ page }) => {
     await page.goto('/')
-    await expect(page.getByText('Michael Truong')).toBeVisible()
-    await expect(page.getByRole('link', { name: /linkedin/i })).toBeVisible()
-    await expect(page.getByRole('link', { name: /github/i })).toBeVisible()
+    await page.waitForSelector('[data-testid="loader"]', { state: 'detached', timeout: 8000 })
+    await expect(page.getByText('Michael Truong')).toBeVisible({ timeout: 4000 })
+    await expect(page.getByText('Work')).toBeVisible()
+    await expect(page.getByText('Creative')).toBeVisible()
   })
 
-  test('center cell is visible on load', async ({ page }) => {
+  test('renders project cards from project data', async ({ page }) => {
     await page.goto('/')
-    await expect(page.getByText(/intro/i)).toBeVisible()
-  })
-
-  test('scroll sections exist in the DOM', async ({ page }) => {
-    await page.goto('/')
-    await expect(page.getByText('About')).toBeAttached()
-    await expect(page.getByText('Skills')).toBeAttached()
-    await expect(page.getByText('Contact')).toBeAttached()
+    await page.waitForSelector('[data-testid="loader"]', { state: 'detached', timeout: 8000 })
+    await expect(page.getByText('Product Design')).toBeVisible({ timeout: 4000 })
+    await expect(page.getByText('Redesigning the checkout flow')).toBeVisible()
   })
 })
