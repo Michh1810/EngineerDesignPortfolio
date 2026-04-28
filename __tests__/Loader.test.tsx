@@ -1,32 +1,48 @@
+import React from 'react'
 import { render, screen } from '@testing-library/react'
 import Loader from '@/components/Loader'
 
-jest.mock('@/lib/gsap', () => ({
+jest.mock('gsap', () => ({
   gsap: {
     timeline: jest.fn(() => ({
       to: jest.fn().mockReturnThis(),
       kill: jest.fn(),
     })),
+    set: jest.fn(),
+    to: jest.fn(),
   },
-  ScrollTrigger: {},
 }))
 
+beforeAll(() => {
+  Object.defineProperty(SVGElement.prototype, 'getTotalLength', {
+    value: () => 600,
+    configurable: true,
+  })
+})
+
 describe('Loader', () => {
-  it('renders project category cards', () => {
-    render(<Loader />)
-    expect(screen.getByText('Product Design')).toBeInTheDocument()
-    expect(screen.getByText('Motion Work')).toBeInTheDocument()
-    expect(screen.getByText('Brand Design')).toBeInTheDocument()
+  it('renders the loader overlay', () => {
+    render(<Loader onDone={jest.fn()} />)
+    expect(screen.getByTestId('loader')).toBeInTheDocument()
   })
 
-  it('renders the center hero cell', () => {
-    render(<Loader />)
-    expect(screen.getByText(/intro/i)).toBeInTheDocument()
+  it('renders the SVG element', () => {
+    const { container } = render(<Loader onDone={jest.fn()} />)
+    expect(container.querySelector('svg')).toBeInTheDocument()
   })
 
-  it('renders a 3x3 grid container', () => {
-    const { container } = render(<Loader />)
-    const grid = container.querySelector('[data-testid="grid"]')
-    expect(grid).toBeInTheDocument()
+  it('renders the M path', () => {
+    const { container } = render(<Loader onDone={jest.fn()} />)
+    expect(container.querySelector('path')).toBeInTheDocument()
+  })
+
+  it('renders the glow ellipse', () => {
+    const { container } = render(<Loader onDone={jest.fn()} />)
+    expect(container.querySelector('ellipse')).toBeInTheDocument()
+  })
+
+  it('accepts onDone prop without throwing', () => {
+    const onDone = jest.fn()
+    expect(() => render(<Loader onDone={onDone} />)).not.toThrow()
   })
 })
