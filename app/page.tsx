@@ -1,13 +1,16 @@
-import Nav from '@/components/Nav'
+'use client'
+
+import { useState } from 'react'
+import WorkList from '@/components/WorkList'
 import Loader from '@/components/Loader'
-import ScrollSections from '@/components/ScrollSections'
 
 export default function HomePage() {
+  const [loaderDone, setLoaderDone] = useState(false)
+
   return (
     <main>
-      <Nav />
-      <Loader />
-      <ScrollSections />
+      {!loaderDone && <Loader onDone={() => setLoaderDone(true)} />}
+      <WorkList loaderDone={loaderDone} />
     </main>
   )
 }
