@@ -1,91 +1,110 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import { gsap } from '@/lib/gsap'
-import GridCell from './GridCell'
-import HeroCell from './HeroCell'
-import { projectsByPosition } from '@/data/projects'
+import { useEffect, useRef } from 'react'
+import { gsap } from 'gsap'
 
-// Clockwise from top-center: 2→3→6→9→8→7→4→1
-const REVEAL_ORDER = [2, 3, 6, 9, 8, 7, 4, 1]
-const STAGGER_DELAY = 0.11 // seconds between each cell
+interface LoaderProps {
+  onDone: () => void
+}
 
-type LoaderPhase = 'loading' | 'revealing' | 'complete'
-
-export default function Loader() {
-  const [phase, setPhase] = useState<LoaderPhase>('loading')
-  const [heroPhase, setHeroPhase] = useState<'video' | 'hero'>('video')
-  const cellRefs = useRef<Map<number, HTMLDivElement>>(new Map())
-
-  const handleVideoEnd = () => setPhase('revealing')
+export default function Loader({ onDone }: LoaderProps) {
+  const overlayRef = useRef<HTMLDivElement>(null)
+  const pathRef = useRef<SVGPathElement>(null)
+  const glowRef = useRef<SVGEllipseElement>(null)
 
   useEffect(() => {
-    if (phase !== 'revealing') return
+    const path = pathRef.current
+    const overlay = overlayRef.current
+    const glow = glowRef.current
+    if (!path || !overlay || !glow) return
 
-    const tl = gsap.timeline({
-      delay: 0.5,
-      onComplete: () => {
-        setPhase('complete')
-        setHeroPhase('hero')
-        document.body.style.overflow = 'auto'
-      },
-    })
+    const length = path.getTotalLength()
 
-    REVEAL_ORDER.forEach((pos, i) => {
-      const el = cellRefs.current.get(pos)
-      if (!el) return
-      tl.to(
-        el,
-        { opacity: 1, scale: 1, duration: 0.65, ease: 'power3.out' },
-        i * STAGGER_DELAY
-      )
+    const tl = gsap.timeline()
+
+    gsap.set(path, {
+      strokeDasharray: length,
+      strokeDashoffset: length,
+      opacity: 1,
     })
+    gsap.set(glow, { opacity: 0 })
+
+    tl
+      .to(path, {
+        strokeDashoffset: 0,
+        duration: 2.2,
+        ease: 'power2.inOut',
+      })
+      .to(glow, {
+        opacity: 0.5,
+        duration: 1.1,
+        ease: 'power2.inOut',
+        yoyo: true,
+        repeat: 1,
+      }, '<')
+      .to({}, { duration: 0.3 })
+      .to(overlay, {
+        opacity: 0,
+        duration: 0.6,
+        ease: 'power2.in',
+        onComplete: onDone,
+      })
 
     return () => { tl.kill() }
-  }, [phase])
-
-  // Lock scroll during loader
-  useEffect(() => {
-    document.body.style.overflow = 'hidden'
-    return () => { document.body.style.overflow = 'auto' }
-  }, [])
-
-  const setRef = (pos: number) => (el: HTMLDivElement | null) => {
-    if (el) cellRefs.current.set(pos, el)
-    else cellRefs.current.delete(pos)
-  }
+  }, [onDone])
 
   return (
     <div
-      data-testid="grid"
-      className="grid w-screen"
+      ref={overlayRef}
+      data-testid="loader"
       style={{
-        gridTemplateColumns: 'repeat(3, 33.333vw)',
-        gridTemplateRows: 'repeat(3, calc((100vh - 48px) / 3))',
-        height: 'calc(100vh - 48px)',
+        position: 'fixed',
+        inset: 0,
+        zIndex: 200,
+        background: '#080808',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
-      {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((pos) => {
-        if (pos === 5) {
-          return (
-            <div key={5} className="w-full h-full">
-              <HeroCell onVideoEnd={handleVideoEnd} phase={heroPhase} />
-            </div>
-          )
-        }
+      <svg
+        width="220"
+        height="200"
+        viewBox="0 0 220 200"
+        fill="none"
+        aria-hidden="true"
+      >
+        <defs>
+          <linearGradient id="loader-stroke-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#f0abfc" />
+            <stop offset="50%" stopColor="#c084fc" />
+            <stop offset="100%" stopColor="#7c3aed" />
+          </linearGradient>
+          <radialGradient id="loader-glow-grad" cx="50%" cy="60%" r="50%">
+            <stop offset="0%" stopColor="#d946ef" stopOpacity="0.7" />
+            <stop offset="100%" stopColor="#7c3aed" stopOpacity="0" />
+          </radialGradient>
+        </defs>
 
-        const project = projectsByPosition[pos]
-        return (
-          <div
-            key={pos}
-            ref={setRef(pos)}
-            className="w-full h-full"
-            style={{ opacity: 0, transform: 'scale(0.86)' }}
-          >
-            <GridCell project={project} />
-          </div>
-        )
-      })}
+        <ellipse
+          ref={glowRef}
+          cx="110"
+          cy="130"
+          rx="80"
+          ry="55"
+          fill="url(#loader-glow-grad)"
+        />
+
+        <path
+          ref={pathRef}
+          d="M 42,160 C 40,135 41,100 46,70 C 50,50 58,40 64,44 C 70,48 74,65 76,85 C 78,100 80,115 84,108 C 90,96 96,68 102,52 C 108,36 116,33 122,40 C 128,47 130,66 130,88 C 130,110 130,130 133,148 C 134,153 136,158 140,162"
+          stroke="url(#loader-stroke-grad)"
+          strokeWidth="3.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="none"
+        />
+      </svg>
     </div>
   )
 }
