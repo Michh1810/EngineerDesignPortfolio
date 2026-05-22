@@ -25,6 +25,7 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
   const highlightRef = useRef<SVGSVGElement>(null) // highlightRef is for the Highlight1 SVG.
   const highlight2Ref = useRef<HTMLDivElement>(null) // highlight2Ref is for the outer SVG Highlight2.
   const baseSvgRef = useRef<SVGSVGElement>(null) // baseSvgRef is for the Base SVG.
+  const baseSvgWrapperRef = useRef<HTMLDivElement>(null) // baseSvgWrapperRef wraps the base SVG to prevent first-paint flash.
   const cardBgRef = useRef<HTMLDivElement>(null) // cardBgRef is for the Card background shell (glow + noise).
   const hasPlayedRef = useRef(false)
 
@@ -91,7 +92,6 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
         if (typeof window !== 'undefined') {
           sessionStorage.setItem('introPlayed', 'true')
         }
-        onIntroComplete?.()
       },
     })
 
@@ -142,6 +142,9 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
           ease: 'power2.inOut',
         }, "<-0.8")
       }
+
+      // Fire intro complete early so card stack drops while cardBg still fades
+      tl.add(() => { onIntroComplete?.() }, '-=0.6')
     }
   }, [onIntroComplete])
 
@@ -154,6 +157,8 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
       const length = paths[0].getTotalLength()
       gsap.set(paths, { strokeDasharray: length, strokeDashoffset: hasPlayedGlobal ? 0 : length })
     }
+    // Reveal the base SVG wrapper now that dash offsets are configured
+    if (baseSvgWrapperRef.current) gsap.set(baseSvgWrapperRef.current, { opacity: 1 })
     if (highlightRef.current) gsap.set(highlightRef.current, { opacity: hasPlayedGlobal ? 1 : 0 })
     if (highlight2Ref.current) gsap.set(highlight2Ref.current, { opacity: hasPlayedGlobal ? 1 : 0 })
     if (cardBgRef.current) gsap.set(cardBgRef.current, { opacity: hasPlayedGlobal ? 1 : 0 })
@@ -183,7 +188,7 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
       }}
     >
       {/* Card background shell: glow + noise (hidden initially, fades in after drawing) */}
-      <div ref={cardBgRef}>
+      <div ref={cardBgRef} style={{ opacity: 0 }}>
         {/* Glowing Background Rectangle (Bottom Layer) */}
         <div
           className="absolute inset-0 rounded-[16px]"
@@ -290,7 +295,7 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
       >
         {/* The Base SVG Start */}
-        <div style={{ mixBlendMode: 'plus-lighter' }}>
+        <div ref={baseSvgWrapperRef} style={{ mixBlendMode: 'plus-lighter', opacity: 0 }}>
           <svg ref={baseSvgRef} xmlns="http://www.w3.org/2000/svg" width="200" height="152" viewBox="0 0 200 152" fill="none" overflow="visible">
             <g filter="url(#filter1_i_59_209)" style={{ mixBlendMode: 'plus-lighter' } as React.CSSProperties}>
               <path ref={el => { pathRefs.current[0] = el }} d="M5 136.75C9.50003 131.725 16.2736 127.769 22.2423 111.75C27.3824 97.9548 32.5384 78.624 31.2609 52.2501C28.5 -4.74991 104.196 -33.7538 47.1908 115.684C36.4259 143.904 73.8794 163.42 76.6491 111.75C80.1907 45.6841 131.508 13.3442 148.999 37.6748C154.986 46.0031 151.5 64.5031 132.999 78.6747C113.881 93.3197 100.201 117.308 106.5 131.75C110 139.775 127.299 152.751 146.499 139.775C170.499 123.555 158.499 102.175 195.999 102.175" stroke="url(#paint0_radial_59_209)" strokeWidth="12" />
@@ -323,7 +328,7 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
         <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', mixBlendMode: 'plus-lighter' }}>
           <svg
             ref={highlightRef}
-            style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', overflow: 'visible' }}
+            style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', overflow: 'visible', opacity: 0 }}
             xmlns="http://www.w3.org/2000/svg"
             width="200"
             height="152"
@@ -358,7 +363,7 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
       </div>
 
       {/* SVG Highlight2 (outer one) */}
-      <div ref={highlight2Ref} style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none', mixBlendMode: 'plus-lighter', zIndex: 20 }}>
+      <div ref={highlight2Ref} style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none', mixBlendMode: 'plus-lighter', zIndex: 20, opacity: 0 }}>
         <svg
           style={{ overflow: 'visible' }}
           xmlns="http://www.w3.org/2000/svg"

@@ -219,7 +219,7 @@ export default function CardsList({ onActiveChange, onIntroComplete }: CardsList
             key={card.id}
             ref={el => { cardRefs.current[index] = el }}
             className="absolute w-full max-w-[calc(100%-2rem)] md:max-w-[680px] lg:max-w-[780px] transition-[max-width] duration-300 ease-out"
-            style={{ transformOrigin: 'top center' }}
+            style={{ transformOrigin: 'top center', opacity: 0 }}
           >
             <div
               className="relative block border border-[#2A2A2A]/80 rounded-[12px] md:rounded-[14px] lg:rounded-[16px] overflow-hidden h-[280px] md:h-[340px] lg:h-[390px] transition-[height,border-radius] duration-300 ease-out"
