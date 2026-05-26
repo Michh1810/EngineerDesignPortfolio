@@ -127,8 +127,8 @@ export default function CardsList({ onActiveChange, onIntroComplete }: CardsList
         // Exit (Scroll Up) Animation Timing: Card is moving from active (or stacked) to off-screen top.
         if (offset < 0 && prevOffset >= 0) {
           gsap.killTweensOf(card)
-          gsap.to(card, { y, scale, duration: 1.0, ease: 'expo.out' })// Cards scalling a bit smaller when exiting, Duration = total slide up time!
-          gsap.to(card, { opacity, duration: 0.3, delay: 0.5, ease: 'expo.out' })
+          gsap.to(card, { y, scale, duration: 1.5, ease: 'expo.out' })// Match the 0.8s duration of return
+          gsap.to(card, { opacity, duration: 0.3, delay: 0.3, ease: 'expo.out' })
         }
         // Return (Scroll Down) Animation Timing: Card is returning from off-screen top back to active stack.
         else if (offset >= 0 && prevOffset < 0) {
@@ -169,7 +169,7 @@ export default function CardsList({ onActiveChange, onIntroComplete }: CardsList
         absVelocity > 1
 
       // Ensure we don't fire too rapidly (debounce)
-      const cooldownPassed = now - lastFiredAtRef.current >= 225
+      const cooldownPassed = now - lastFiredAtRef.current >= 180
 
       // Trigger if we are not currently scrolling, OR it's a fast flick, AND enough time has passed
       if ((!isScrollingRef.current || isFastFlick) && cooldownPassed) {
