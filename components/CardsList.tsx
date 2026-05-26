@@ -127,18 +127,18 @@ export default function CardsList({ onActiveChange, onIntroComplete }: CardsList
         // Exit (Scroll Up) Animation Timing: Card is moving from active (or stacked) to off-screen top.
         if (offset < 0 && prevOffset >= 0) {
           gsap.killTweensOf(card)
-          gsap.to(card, { y, scale, duration: 0.9, ease: 'power2.out' })// Cards scalling a bit smaller when exiting, Duration = total slide up time!
-          gsap.to(card, { opacity, duration: 0.2, delay: 0.5, ease: 'power2.out' })
+          gsap.to(card, { y, scale, duration: 1.0, ease: 'expo.out' })// Cards scalling a bit smaller when exiting, Duration = total slide up time!
+          gsap.to(card, { opacity, duration: 0.3, delay: 0.5, ease: 'expo.out' })
         }
         // Return (Scroll Down) Animation Timing: Card is returning from off-screen top back to active stack.
         else if (offset >= 0 && prevOffset < 0) {
           gsap.killTweensOf(card)
           gsap.set(card, { opacity })
-          gsap.to(card, { y, scale, duration: 0.5, ease: 'power2.out' })
+          gsap.to(card, { y, scale, duration: 0.8, ease: 'expo.out' })
         }
         // Normal stack shifting: Card is just moving up or down within the visible stack.
         else {
-          gsap.to(card, { y, scale, opacity, duration: 0.2, ease: 'power2.inOut', overwrite: true })
+          gsap.to(card, { y, scale, opacity, duration: 0.6, ease: 'expo.out', overwrite: true })
         }
       })
     }
@@ -207,6 +207,7 @@ export default function CardsList({ onActiveChange, onIntroComplete }: CardsList
         ref={el => { cardRefs.current[0] = el }}
         className="absolute w-full max-w-[calc(100%-2rem)] md:max-w-[680px] lg:max-w-[780px]"
         style={{ transformOrigin: 'top center' }}
+        data-cursor-text="Let's Scroll Down"
       >
         <StatementCard loaderDone={true} onIntroComplete={handleIntroComplete} />
       </div>
@@ -218,8 +219,9 @@ export default function CardsList({ onActiveChange, onIntroComplete }: CardsList
           <div
             key={card.id}
             ref={el => { cardRefs.current[index] = el }}
-            className="absolute w-full max-w-[calc(100%-2rem)] md:max-w-[680px] lg:max-w-[780px] transition-[max-width] duration-300 ease-out"
+            className="absolute w-full max-w-[calc(100%-2rem)] md:max-w-[680px] lg:max-w-[780px] transition-[max-width] duration-300 ease-out cursor-pointer"
             style={{ transformOrigin: 'top center', opacity: 0 }}
+            data-cursor-text="Click to Open"
           >
             <div
               className="relative block border border-[#2A2A2A]/80 rounded-[12px] md:rounded-[14px] lg:rounded-[16px] overflow-hidden h-[280px] md:h-[340px] lg:h-[390px] transition-[height,border-radius] duration-300 ease-out"
@@ -246,7 +248,9 @@ export default function CardsList({ onActiveChange, onIntroComplete }: CardsList
                   className="absolute top-0 bottom-[-4px] left-[-4px] right-[-4px] bg-gradient-to-t from-black/70 to-transparent backdrop-blur-md"
                   style={{
                     maskImage: 'linear-gradient(to top, black 30%, transparent 100%)',
-                    WebkitMaskImage: 'linear-gradient(to top, black 30%, transparent 100%)'
+                    WebkitMaskImage: 'linear-gradient(to top, black 30%, transparent 100%)',
+                    transform: 'translateZ(0)',
+                    willChange: 'transform'
                   }}
                 />
 

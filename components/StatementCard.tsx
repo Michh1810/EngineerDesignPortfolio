@@ -32,7 +32,7 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
 
   // Responsive style values based on breakpoint — updates on resize
   const [bp, setBp] = useState<'mobile' | 'tablet' | 'desktop'>(() => getBreakpoint())
-  
+
   useEffect(() => {
     const onResize = () => setBp(getBreakpoint())
     window.addEventListener('resize', onResize)
@@ -87,7 +87,7 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
       gsap.set(cardBgRef.current, { opacity: 0 })
     }
     if (textContentRef.current) {
-      gsap.set(textContentRef.current, { opacity: 0 })
+      gsap.set(textContentRef.current, { opacity: 0, y: -10 })
     }
 
     // Create a timeline for sequential animations
@@ -110,8 +110,8 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
     if (svgRef.current) {
       tl.to(svgRef.current, {
         scale: svgScale,
-        duration: 1.2,
-        ease: 'power2.inOut',
+        duration: 1.6,
+        ease: 'easeInOutCubic',
       })
 
       if (highlightRef.current) {
@@ -127,24 +127,16 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
           opacity: 1,
           duration: 1.2,
           ease: 'power2.inOut',
-        }, "<+0.3") // Start at the same time at previous but offset by + ..s
+        }, "<") // Start at the same time at previous but offset by + ..s
       }
 
       if (cardBgRef.current) {
         tl.to(cardBgRef.current, {
           opacity: 1,
-          duration: 1,
+          duration: 1.2,
           ease: 'power2.out',
         }, "<+0.5")
       }
-      if (textContentRef.current) {
-        tl.to(textContentRef.current, {
-          opacity: 1,
-          duration: 1,
-          ease: 'power2.out',
-        }, "<")
-      }
-
       // Blur the base SVG out at the same time
       if (baseSvgRef.current) {
         tl.to(baseSvgRef.current, {
@@ -154,8 +146,17 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
         }, "<-0.8")
       }
 
-      // Fire intro complete early so card stack drops while cardBg still fades
-      tl.add(() => { onIntroComplete?.() }, '-=0.6')
+      // Fire intro complete so card stack drops
+      tl.add(() => { onIntroComplete?.() }, 'dropTime')
+
+      if (textContentRef.current) {
+        tl.to(textContentRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          ease: 'expo.out',
+        }, 'dropTime')
+      }
     }
   }, [onIntroComplete])
 
@@ -173,7 +174,7 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
     if (highlightRef.current) gsap.set(highlightRef.current, { opacity: hasPlayedGlobal ? 1 : 0 })
     if (highlight2Ref.current) gsap.set(highlight2Ref.current, { opacity: hasPlayedGlobal ? 1 : 0 })
     if (cardBgRef.current) gsap.set(cardBgRef.current, { opacity: hasPlayedGlobal ? 1 : 0 })
-    if (textContentRef.current) gsap.set(textContentRef.current, { opacity: hasPlayedGlobal ? 1 : 0 })
+    if (textContentRef.current) gsap.set(textContentRef.current, { opacity: hasPlayedGlobal ? 1 : 0, y: hasPlayedGlobal ? 0 : -40 })
 
     if (hasPlayedGlobal) {
       if (svgRef.current) gsap.set(svgRef.current, { scale: svgScale })
@@ -242,11 +243,11 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
         >
           <span style={{
             fontFamily: 'SF Pro Display',
-            fontWeight: '500',
+            fontWeight: '600',
             fontSize: `${styles.nameFontSize}px`,
             transition: 'font-size 0.3s ease-out',
             textTransform: 'uppercase',
-            letterSpacing: '0.03em',
+            letterSpacing: '0.05em',
             background: 'linear-gradient(270deg, #D99DFF 10.26%, #8FABF3 95.97%)',
             backgroundClip: 'text',
             WebkitBackgroundClip: 'text',
@@ -296,7 +297,7 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
             fontSize: `${styles.taglineFontSize}px`,
             color: '#FFFFFF',
             opacity: 1,
-            letterSpacing: '-0.01em',
+            letterSpacing: '-0.0em',
             transition: 'font-size 0.3s ease-out',
           }}>
             Detail-obsessed, open for new grad full-time roles!

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import './globals.css'
 import GrainOverlay from '@/components/GrainOverlay'
+import CustomCursor from '@/components/CustomCursor'
 
 const sfProDisplay = localFont({
   src: [
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={sfProDisplay.variable}>
       <body className="bg-base text-[#F0EDE8] antialiased font-sans">
+        <CustomCursor />
         <GrainOverlay />
         {children}
       </body>
