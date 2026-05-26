@@ -242,7 +242,7 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
           }}
         >
           <span style={{
-            fontFamily: 'SF Pro Display',
+            fontFamily: 'var(--font-sf-pro-display), system-ui, sans-serif',
             fontWeight: '600',
             fontSize: `${styles.nameFontSize}px`,
             transition: 'font-size 0.3s ease-out',
@@ -268,7 +268,7 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
           }}
         >
           <p style={{
-            fontFamily: 'SF Pro Display',
+            fontFamily: 'var(--font-sf-pro-display), system-ui, sans-serif',
             fontWeight: '500',
             fontSize: `${styles.statementFontSize}px`,
             lineHeight: '119.5%',
@@ -292,7 +292,7 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
           }}
         >
           <span style={{
-            fontFamily: 'SF Pro Display',
+            fontFamily: 'var(--font-sf-pro-display), system-ui, sans-serif',
             fontWeight: '400',
             fontSize: `${styles.taglineFontSize}px`,
             color: '#FFFFFF',

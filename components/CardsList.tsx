@@ -69,6 +69,7 @@ export default function CardsList({ onActiveChange, onIntroComplete }: CardsList
   const lastFiredAtRef = useRef(0)
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const introDoneRef = useRef(false)
+  const touchStartYRef = useRef<number | null>(null)
 
   // Called when StatementCard's animation finishes — reveal stacked cards
   const handleIntroComplete = useCallback(() => {
@@ -196,8 +197,40 @@ export default function CardsList({ onActiveChange, onIntroComplete }: CardsList
     }
 
     window.addEventListener('wheel', onWheel, { passive: false })
+
+    // Touch swipe handler for mobile
+    const onTouchStart = (e: TouchEvent) => {
+      touchStartYRef.current = e.touches[0].clientY
+    }
+
+    const onTouchEnd = (e: TouchEvent) => {
+      if (touchStartYRef.current === null) return
+      if (!introDoneRef.current) return // Don't fire during intro animation
+
+      const deltaY = touchStartYRef.current - e.changedTouches[0].clientY
+      const now = performance.now()
+      const cooldownPassed = now - lastFiredAtRef.current >= 180
+
+      // Require at least 40px of intentional swipe to trigger
+      if (Math.abs(deltaY) > 40 && cooldownPassed) {
+        lastFiredAtRef.current = now
+        if (deltaY > 0) {
+          goTo(activeIndexRef.current + 1) // Swiped up -> next card
+        } else {
+          goTo(activeIndexRef.current - 1) // Swiped down -> previous card
+        }
+      }
+
+      touchStartYRef.current = null
+    }
+
+    window.addEventListener('touchstart', onTouchStart, { passive: true })
+    window.addEventListener('touchend', onTouchEnd, { passive: true })
+
     return () => {
       window.removeEventListener('wheel', onWheel)
+      window.removeEventListener('touchstart', onTouchStart)
+      window.removeEventListener('touchend', onTouchEnd)
       if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current)
     }
   }, [total])
