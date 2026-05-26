@@ -4,3 +4,6 @@ I just updated the code to fix this.
 
 I removed the conflicting overflow-visible Tailwind class.
 I kept overflow: 'hidden' but added transform: 'translateZ(0)' and isolation: 'isolate' to the card frame styles.
+
+Accessibility & Visual Feedback:
+-  Use #AEA9A3 for footnote and unhighlighted text in the progress bar. (9:1 accessiblity contrast)

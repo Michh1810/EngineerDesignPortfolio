@@ -27,6 +27,7 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
   const baseSvgRef = useRef<SVGSVGElement>(null) // baseSvgRef is for the Base SVG.
   const baseSvgWrapperRef = useRef<HTMLDivElement>(null) // baseSvgWrapperRef wraps the base SVG to prevent first-paint flash.
   const cardBgRef = useRef<HTMLDivElement>(null) // cardBgRef is for the Card background shell (glow + noise).
+  const textContentRef = useRef<HTMLDivElement>(null) // textContentRef is for the text.
   const hasPlayedRef = useRef(false)
 
   // Responsive style values based on breakpoint — updates on resize
@@ -85,6 +86,9 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
     if (cardBgRef.current) {
       gsap.set(cardBgRef.current, { opacity: 0 })
     }
+    if (textContentRef.current) {
+      gsap.set(textContentRef.current, { opacity: 0 })
+    }
 
     // Create a timeline for sequential animations
     const tl = gsap.timeline({
@@ -133,6 +137,13 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
           ease: 'power2.out',
         }, "<+0.5")
       }
+      if (textContentRef.current) {
+        tl.to(textContentRef.current, {
+          opacity: 1,
+          duration: 1,
+          ease: 'power2.out',
+        }, "<")
+      }
 
       // Blur the base SVG out at the same time
       if (baseSvgRef.current) {
@@ -162,6 +173,7 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
     if (highlightRef.current) gsap.set(highlightRef.current, { opacity: hasPlayedGlobal ? 1 : 0 })
     if (highlight2Ref.current) gsap.set(highlight2Ref.current, { opacity: hasPlayedGlobal ? 1 : 0 })
     if (cardBgRef.current) gsap.set(cardBgRef.current, { opacity: hasPlayedGlobal ? 1 : 0 })
+    if (textContentRef.current) gsap.set(textContentRef.current, { opacity: hasPlayedGlobal ? 1 : 0 })
 
     if (hasPlayedGlobal) {
       if (svgRef.current) gsap.set(svgRef.current, { scale: svgScale })
@@ -188,7 +200,7 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
       }}
     >
       {/* Card background shell: glow + noise (hidden initially, fades in after drawing) */}
-      <div ref={cardBgRef} style={{ opacity: 0 }}>
+      <div ref={cardBgRef} className="absolute inset-0" style={{ opacity: 0, willChange: 'opacity', transform: 'translateZ(0)' }}>
         {/* Glowing Background Rectangle (Bottom Layer) */}
         <div
           className="absolute inset-0 rounded-[16px]"
@@ -202,7 +214,7 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
         {/* Noise Overlay Layer */}
         <div
           className="absolute inset-0 pointer-events-none rounded-[16px] overflow-hidden"
-          style={{ opacity: 1, mixBlendMode: 'overlay' }}
+          style={{ opacity: 1, mixBlendMode: 'overlay', transform: 'translateZ(0)' }}
         >
           <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
             <filter id="noiseFilter">{/* baseFrequency(Size) changes how big the pixels are. 0.8 is bigger pixels. 1 is smaller pixels. 8 is even smaller pixels */}
@@ -215,10 +227,13 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
             <rect width="100%" height="100%" filter="url(#noiseFilter)" />
           </svg>
         </div>
+      </div>
 
+      {/* Text Elements */}
+      <div ref={textContentRef} className="absolute inset-0 z-20 pointer-events-none" style={{ opacity: 0 }}>
         {/* Top-left: Name */}
         <div
-          className="absolute z-20 pointer-events-none"
+          className="absolute"
           style={{
             left: `${styles.namePad.left}px`,
             top: `${styles.namePad.top}px`,
@@ -243,7 +258,7 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
 
         {/* Mid-left: I'm a full-stack developer with a strong background in UX design. */}
         <div
-          className="absolute z-20 pointer-events-none"
+          className="absolute"
           style={{
             left: `${styles.statementPad.left}px`,
             top: `${styles.statementPad.top}px`,
@@ -268,7 +283,7 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
 
         {/* Bottom-mid/right: Detail-obsessed, open for new grad full time roles */}
         <div
-          className="absolute z-20 pointer-events-none"
+          className="absolute"
           style={{
             right: `${styles.taglinePad.right}px`,
             bottom: `${styles.taglinePad.bottom}px`,

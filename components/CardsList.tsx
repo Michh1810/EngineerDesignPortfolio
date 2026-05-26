@@ -243,7 +243,7 @@ export default function CardsList({ onActiveChange, onIntroComplete }: CardsList
               <div className="absolute bottom-0 left-0 w-full z-10 p-4 pt-16 md:p-6 md:pt-20 lg:p-8 lg:pt-24 transition-[padding] duration-300 ease-out">
                 {/* Faded blur background to highlight title and subtitle */}
                 <div
-                  className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent backdrop-blur-md"
+                  className="absolute top-0 bottom-[-4px] left-[-4px] right-[-4px] bg-gradient-to-t from-black/70 to-transparent backdrop-blur-md"
                   style={{
                     maskImage: 'linear-gradient(to top, black 30%, transparent 100%)',
                     WebkitMaskImage: 'linear-gradient(to top, black 30%, transparent 100%)'
@@ -260,9 +260,7 @@ export default function CardsList({ onActiveChange, onIntroComplete }: CardsList
                   </p>
                 </div>
               </div>
-              <span className="absolute top-3 right-4 text-[12px] md:top-5 md:right-6 md:text-footnote text-[#F5F5F5] transition-all duration-300 ease-out">
-                {card.number}
-              </span>
+
             </div>
           </div>
         )

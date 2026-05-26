@@ -31,7 +31,7 @@ export default function Navigation({ isSignatureActive = true, isVisible = true 
   return (
     <aside
       suppressHydrationWarning
-      className={`absolute top-8 left-1/2 z-30 hidden md:flex flex-row items-center gap-8 ease-out -translate-x-1/2 ${hasPlayedGlobal ? '' : 'transition-all duration-[1500ms]'
+      className={`absolute top-8 left-1/2 z-30 hidden md:flex flex-row items-center gap-8 ease-out -translate-x-1/2 ${hasPlayedGlobal ? '' : 'transition-all duration-[1000ms]'
         } ${isVisible ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-4 pointer-events-none'
         }`}
     >
