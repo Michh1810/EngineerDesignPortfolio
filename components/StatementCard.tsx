@@ -241,18 +241,15 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
             transition: 'all 0.3s ease-out',
           }}
         >
-          <span style={{
-            fontFamily: 'var(--font-sf-pro-display), system-ui, sans-serif',
-            fontWeight: '600',
-            fontSize: `${styles.nameFontSize}px`,
-            transition: 'font-size 0.3s ease-out',
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em',
-            background: 'linear-gradient(270deg, #D99DFF 10.26%, #8FABF3 95.97%)',
-            backgroundClip: 'text',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-          }}>
+          <span
+            className="text-subtext font-semibold uppercase tracking-[0.05em] transition-[font-size] duration-300 ease-out"
+            style={{
+              background: 'linear-gradient(270deg, #D99DFF 10.26%, #8FABF3 95.97%)',
+              backgroundClip: 'text',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}
+          >
             Michael Truong
           </span>
         </div>
@@ -267,16 +264,7 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
             transition: 'all 0.3s ease-out',
           }}
         >
-          <p style={{
-            fontFamily: 'var(--font-sf-pro-display), system-ui, sans-serif',
-            fontWeight: '500',
-            fontSize: `${styles.statementFontSize}px`,
-            lineHeight: '119.5%',
-            letterSpacing: '-0.03em',
-            color: '#FFFFFF',
-            opacity: 1,
-            transition: 'font-size 0.3s ease-out',
-          }}>
+          <p className="text-display-1 text-text-primary transition-[font-size] duration-300 ease-out">
             I'm a full-stack developer with a{bp !== 'mobile' && <br />}
             {bp !== 'mobile' ? ' ' : ' '}strong background in UX design.
           </p>
@@ -291,15 +279,7 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
             transition: 'all 0.3s ease-out',
           }}
         >
-          <span style={{
-            fontFamily: 'var(--font-sf-pro-display), system-ui, sans-serif',
-            fontWeight: '400',
-            fontSize: `${styles.taglineFontSize}px`,
-            color: '#FFFFFF',
-            opacity: 1,
-            letterSpacing: '-0.0em',
-            transition: 'font-size 0.3s ease-out',
-          }}>
+          <span className="text-body text-text-primary transition-[font-size] duration-300 ease-out">
             Detail-obsessed, open for new grad full-time roles!
           </span>
         </div>

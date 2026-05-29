@@ -21,16 +21,15 @@ export default function Navigation({ isSignatureActive = true, isVisible = true 
 
   const getLinkClass = (href: string) => {
     const active = isActive(href)
-    return `text-footnote transition-colors ${active ? 'text-[#F0EDE8] hover:text-[#D8D3CC]' : 'text-[#AEA9A3] hover:text-[#7A746D]'
-      }`
+    return `text-subtext hover-text-fade ${active ? 'text-text-primary' : 'text-text-secondary'}`
   }
 
   const getMobileLinkClass = (href: string) => {
     const active = isActive(href)
-    return `text-[13px] font-medium transition-colors px-3 py-1 rounded-full ${active
-      ? 'text-[#F0EDE8] bg-white/10'
-      : 'text-[#AEA9A3] hover:text-[#D8D3CC]'
-    }`
+    return `text-subtext px-3 py-1 rounded-full ${active
+      ? 'text-text-primary bg-white/10'
+      : 'text-text-secondary hover-text-fade'
+      }`
   }
 
   const isClient = typeof window !== 'undefined'
@@ -58,7 +57,7 @@ export default function Navigation({ isSignatureActive = true, isVisible = true 
           href="https://drive.google.com/file/d/1tVDk23d2qJtXlljUBH_DCXF4TPI5DHDc/view"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-footnote text-[#AEA9A3] hover:text-[#7A746D] transition-colors"
+          className="text-subtext text-text-secondary hover-text-fade"
         >
           Resume
         </a>
@@ -83,7 +82,7 @@ export default function Navigation({ isSignatureActive = true, isVisible = true 
           About
         </Link>
         <Link href="/playground" className={getMobileLinkClass('/playground')}>
-          Play
+          Playground
         </Link>
         <a
           href="https://drive.google.com/file/d/1tVDk23d2qJtXlljUBH_DCXF4TPI5DHDc/view"

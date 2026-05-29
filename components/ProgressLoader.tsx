@@ -16,7 +16,7 @@ export default function ProgressLoader({ activeIndex, totalCards, isVisible = tr
         }`}
     >
       <div className="flex items-center justify-center px-4 py-1.5 md:px-5 md:py-2  backdrop-blur-md rounded-[15px] border border-white/10 shadow-lg">
-        <span className="text-footnote md:text-footnote font-medium tracking-medium">
+        <span className="text-subtext">
           <span className="text-[#AEA9A3]">{activeIndex + 1}</span>
           <span className="text-[#AEA9A3] mx-2">of</span>
           <span className="text-[#AEA9A3]">{totalCards}</span>

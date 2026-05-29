@@ -12,16 +12,16 @@ export default function HomePage() {
   const totalCards = CARDS.length + 1 // +1 for the signature card
 
   return (
-    <section className="fixed inset-0 overflow-hidden bg-black">
+    <section className="fixed inset-0 overflow-hidden bg-[#070707]">
       <Navigation isSignatureActive={activeIndex === 0} isVisible={!isForming} />
-      <CardsList 
-        onActiveChange={setActiveIndex} 
+      <CardsList
+        onActiveChange={setActiveIndex}
         onIntroComplete={() => setIsForming(false)}
       />
-      <ProgressLoader 
-        activeIndex={activeIndex} 
-        totalCards={totalCards} 
-        isVisible={!isForming} 
+      <ProgressLoader
+        activeIndex={activeIndex}
+        totalCards={totalCards}
+        isVisible={!isForming}
       />
     </section>
   )

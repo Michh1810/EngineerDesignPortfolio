@@ -98,7 +98,7 @@ export default function CustomCursor() {
     >
       <span
         ref={textRef}
-        className="text-[14px] md:text-[15px] lg:text-body text-[#EFEFEF]/95 whitespace-nowrap"
+        className="text-body text-text-primary/95 whitespace-nowrap"
       >
       </span>
     </div>

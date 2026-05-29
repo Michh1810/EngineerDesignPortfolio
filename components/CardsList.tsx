@@ -291,10 +291,10 @@ export default function CardsList({ onActiveChange, onIntroComplete }: CardsList
 
                 {/* Text Content */}
                 <div className="relative">
-                  <h3 className="font-sans font-medium text-[20px] md:text-[26px] lg:text-[30px] leading-[1.15] text-[#F5F5F5] transition-[font-size] duration-300 ease-out">
+                  <h3 className="text-h1 text-text-primary transition-[font-size] duration-300 ease-out">
                     {card.category}
                   </h3>
-                  <p className="mt-1.5 md:mt-2 text-[14px] md:text-[15px] lg:text-body text-[#EFEFEF]/95 max-w-[95%] md:max-w-[90%] transition-[font-size,margin] duration-300 ease-out">
+                  <p className="mt-1.5 md:mt-2 text-body text-text-primary opacity-95 max-w-[95%] md:max-w-[90%] transition-[font-size,margin] duration-300 ease-out">
                     {card.title}
                   </p>
                 </div>
