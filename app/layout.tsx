@@ -22,6 +22,9 @@ const sfProDisplay = localFont({
 export const metadata: Metadata = {
   title: 'Michael Truong',
   description: 'Portfolio of Michael Truong, Design Engineer.',
+  icons: {
+    icon: '/meta/favcon.png',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
