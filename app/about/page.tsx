@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
+import Image from 'next/image'
 import Navigation from '@/components/Navigation'
 
 export default function AboutPage() {
@@ -24,17 +25,20 @@ export default function AboutPage() {
     {
       role: 'Software Engineering Intern',
       company: 'FPT Software',
-      year: 'Summer 2025'
+      year: 'Summer 2025',
+      link: 'https://fptsoftware.com/'
     },
     {
       role: 'Software Developer Intern',
       company: 'Taperk Inc',
-      year: 'Summer 2024'
+      year: 'Summer 2024',
+      link: 'https://www.linkedin.com/company/taperk/'
     },
     {
       role: 'UX Research Assistant',
       company: 'EnCoDe Lab',
-      year: '2024'
+      year: '2024',
+      link: 'https://encoderesearchlab.org/'
     }
   ]
 
@@ -44,14 +48,37 @@ export default function AboutPage() {
 
       <Navigation isVisible={true} isSignatureActive={false} />
 
-      <div className="relative z-10 max-w-2xl mx-auto px-6 pt-32 md:pt-48 flex flex-col">
-        <div ref={contentRef} className="flex flex-col gap-16 md:gap-24">
+      <div className="relative z-10 max-w-2xl mx-auto px-6 pt-32 md:pt-40 flex flex-col gap-2">
+        <div className="flex flex-col gap-1 items-center justify-center">
+          <h1 className="text-h1 text-text-primary tracking-tight">
+            Michael Truong
+          </h1>
+          <p className="text-body text-text-secondary leading-relaxed text-center">
+            Design Engineer | Seeking fall internship and new grad opportunities!
+          </p>
+          <div className="flex flex-col gap-2 w-full">
+            <div className="w-full relative aspect-[6/5] sm:aspect-[14/9] rounded-2xl overflow-hidden mt-4">
+              <Image
+                src="/profile.JPG"
+                alt="© me, building products with new technology"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+            </div>
+            <p className="text-body text-text-secondary leading-relaxed text-center">
+              © me, building products with new technology
+            </p>
+          </div>
+        </div>
+
+
+
+        <div ref={contentRef} className="flex flex-col gap-16 md:gap-24 pt-4">
 
           {/* Header */}
           <section className="flex flex-col gap-6">
-            <h1 className="text-h1 text-text-primary tracking-tight">
-              Michael Truong
-            </h1>
+
             <p className="text-body text-text-primary leading-relaxed">
               I love it when I can actually build and ship my own design. It's like turning dreams into life.
             </p>
@@ -65,13 +92,19 @@ export default function AboutPage() {
 
           {/* Experience */}
           <section className="flex flex-col gap-8">
-            <h2 className="text-subtext text-[#605850] uppercase tracking-widest">Experience</h2>
+            <h2 className="text-title text-text-secondary">Experience</h2>
             <div className="flex flex-col gap-6">
               {experience.map((item, i) => (
                 <div key={i} className="flex flex-col md:flex-row md:justify-between gap-1 md:gap-8 group">
                   <div className="flex flex-col md:w-2/3">
                     <h3 className="text-body text-text-primary">
-                      <span className="opacity-100">{item.company}</span>
+                      {item.link ? (
+                        <a href={item.link} target="_blank" rel="noopener noreferrer" className="opacity-100 hover-text-fade decoration-[0.5px] underline-offset-4">
+                          {item.company}
+                        </a>
+                      ) : (
+                        <span className="opacity-100">{item.company}</span>
+                      )}
                       <span className="opacity-70">, {item.role}</span>
                     </h3>
                     <span className="text-body text-text-primary opacity-70 md:hidden mt-1">{item.year}</span>
@@ -86,7 +119,7 @@ export default function AboutPage() {
 
           {/* Connect */}
           <section className="flex flex-col gap-4">
-            <h2 className="text-subtext text-[#605850] uppercase tracking-widest">Connect</h2>
+            <h2 className="text-title text-text-secondary">Connect</h2>
             <div className="flex flex-row flex-wrap items-center gap-3 text-body">
               <a href="https://www.linkedin.com/in/michael-truongg/" target="_blank" rel="noopener noreferrer" className="text-text-primary hover-text-fade w-fit">LinkedIn</a>
               <span className="text-[#605850]">|</span>

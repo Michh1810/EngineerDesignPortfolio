@@ -20,7 +20,7 @@ const sfProDisplay = localFont({
 })
 
 export const metadata: Metadata = {
-  title: 'Michael Truong — Design Engineer',
+  title: 'Michael Truong',
   description: 'Portfolio of Michael Truong, Design Engineer.',
 }
 

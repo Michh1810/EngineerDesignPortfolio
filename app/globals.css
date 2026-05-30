@@ -44,6 +44,10 @@
     @apply text-[14px] xl:text-[16px] 2xl:text-[20px] leading-[1.4];
   }
 
+  .text-title {
+    @apply text-[15px] xl:text-[18px] 2xl:text-[24px] leading-[1.4] uppercase tracking-wider;
+  }
+
 }
 
 
