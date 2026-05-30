@@ -5,12 +5,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        base: '#070707',
-        'text-primary': '#F0EDE8',
-        'text-secondary': '#A09890',
-        'text-muted': '#605850',
-        'border-subtle': '#141414',
-        'border-hover': '#242420',
+        base: 'var(--color-base)',
+        'text-primary': 'var(--color-text-primary)',
+        'text-secondary': 'var(--color-text-secondary)',
+        'text-muted': 'var(--color-text-muted)',
+        'border-subtle': 'var(--color-border-subtle)',
+        'border-hover': 'var(--color-border-hover)',
       },
       fontFamily: {
         sans: ['var(--font-sf-pro-display)', 'system-ui', 'sans-serif'],

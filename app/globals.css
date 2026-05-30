@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    /* use for main background color */
+    --color-base: #010002;
+    --color-text-primary: #F0EDE8;
+    --color-text-secondary: #A09890;
+    --color-text-muted: #605850;
+    --color-border-subtle: #141414;
+    --color-border-hover: #242420;
+  }
+}
+
 @layer utilities {
   .hover-text-fade {
     @apply transition-opacity duration-300 hover:opacity-60;
@@ -36,8 +48,8 @@
 
 
 body {
-  background: #070707;
-  color: #F0EDE8;
+  background: var(--color-base);
+  color: var(--color-text-primary);
   overflow-x: hidden;
 }
 
