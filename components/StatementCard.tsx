@@ -39,6 +39,7 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
     return () => window.removeEventListener('resize', onResize)
   }, [])
 
+  // Scalling up the SVG based on the breakpoint
   const svgScale = bp === 'mobile' ? 2.0 : bp === 'tablet' ? 2.6 : 3.2
   const styles = (() => {
     if (bp === 'mobile') return {
@@ -133,7 +134,7 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
       if (cardBgRef.current) {
         tl.to(cardBgRef.current, {
           opacity: 1,
-          duration: 1.2,
+          duration: 0.8,
           ease: 'power2.out',
         }, "<+0.5")
       }
@@ -146,16 +147,16 @@ export default function StatementCard({ loaderDone = true, onIntroComplete }: St
         }, "<-0.8")
       }
 
-      // Fire intro complete so card stack drops
-      tl.add(() => { onIntroComplete?.() }, 'dropTime')
+      // droptime control when cardstack and nav drops
+      tl.add(() => { onIntroComplete?.() }, 'dropTime-=0.9') //OnIntroComplete here sets the cards stack drop and Navigation animation starts
 
       if (textContentRef.current) {
         tl.to(textContentRef.current, {
           opacity: 1,
           y: 0,
-          duration: 1.2,
+          duration: 1.0,
           ease: 'expo.out',
-        }, 'dropTime')
+        }, 'dropTime-=0.9')
       }
     }
   }, [onIntroComplete])

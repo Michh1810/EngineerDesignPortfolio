@@ -29,6 +29,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
+    
     <html lang="en" className={sfProDisplay.variable}>
       <body className="bg-base text-[#F0EDE8] antialiased font-sans">
         <CustomCursor />

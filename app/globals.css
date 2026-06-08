@@ -23,7 +23,7 @@
 /* all tracking, lineheigth, everything about fonts will be defined here! */
 @layer components {
   .text-display-1 {
-    @apply text-[36px] xl:text-[40px] 2xl:text-[48px] leading-[1.1] xl:leading-[1.05] font-semibold font-sans tracking-[-0.02em];
+    @apply text-[36px] xl:text-[40px] 2xl:text-[48px] leading-[1.1] xl:leading-[1.05] font-semibold font-sans tracking-[-0.01em];
   }
 
   .text-h1 {
